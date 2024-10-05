@@ -1,0 +1,32 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2>{{ event.title }}</h2>
+        <p>{{ event.description }}</p>
+        <p><strong>地点:</strong> {{ event.location }}</p>
+        <p><strong>开始时间:</strong> {{ event.start_time }}</p>
+        <p><strong>结束时间:</strong> {{ event.end_time }}</p>
+
+        {% if user.is_authenticated %}
+            {% if user_has_joined %}
+                <p class="text-success">你已参与该活动</p>
+                <form method="POST" action="{% url 'cancel_participation' event.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">取消参与</button>
+                </form>
+            {% else %}
+                <form method="POST" action="{% url 'join_event' event.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success">参与活动</button>
+                </form>
+            {% endif %}
+        {% else %}
+            <p class="text-danger">请先 <a href="{% url 'login' %}">登录</a>，以参与或取消参与活动。</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

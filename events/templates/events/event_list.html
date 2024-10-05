@@ -1,0 +1,25 @@
+<!-- templates/events/event_list.html -->
+
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1 class="text-center">志愿活动列表</h1>
+
+<div class="row">
+  {% for event in events %}
+  <div class="col-md-4 my-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ event.title }}</h5>
+        <p class="card-text">{{ event.description|truncatechars:100 }}</p>
+        <p class="card-text"><small class="text-muted">地点: {{ event.location }}</small></p>
+        <a href="{% url 'event_detail' event.id %}" class="btn btn-primary">查看详情</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<a href="{% url 'create_event' %}" class="btn btn-success">发布新的志愿活动</a>
+{% endblock %}
